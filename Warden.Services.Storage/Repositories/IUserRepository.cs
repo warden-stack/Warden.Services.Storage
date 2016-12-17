@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.DTO.Users;
+using Warden.Services.Users.Shared.Dto;
 
 namespace Warden.Services.Storage.Repositories
 {
     public interface IUserRepository
     {
-        Task<Maybe<UserDto>> GetByIdAsync(string id);
-        Task<Maybe<UserDto>> GetByEmailAsync(string email);
-        Task AddAsync(UserDto user);
+        Task<bool> ExistsAsync(string userId);
+        Task<Maybe<UserDto>> GetByIdAsync(string userId);
+        Task<Maybe<UserDto>> GetByNameAsync(string name);
         Task UpdateAsync(UserDto user);
+        Task AddAsync(UserDto user);
     }
 }

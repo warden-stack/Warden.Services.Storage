@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.DTO.Operations;
+using Warden.Services.Operations.Shared.Dto;
 using Warden.Services.Storage.Repositories;
-using Warden.Services.Storage.Settings;
+using Warden.Services.Storage.ServiceClients;
 
 namespace Warden.Services.Storage.Providers
 {
     public class OperationProvider : IOperationProvider
     {
+        private readonly IProviderClient _provider;
         private readonly IOperationRepository _operationRepository;
-        private readonly IProviderClient _providerClient;
-        private readonly ProviderSettings _providerSettings;
+        private readonly IOperationServiceClient _serviceClient;
 
-        public OperationProvider(IOperationRepository operationRepository,
-            IProviderClient providerClient,
-            ProviderSettings providerSettings)
+        public OperationProvider(IProviderClient provider,
+            IOperationRepository operationRepository,
+            IOperationServiceClient serviceClient)
         {
+            _provider = provider;
             _operationRepository = operationRepository;
-            _providerClient = providerClient;
-            _providerSettings = providerSettings;
+            _serviceClient = serviceClient;
         }
 
-        public async Task<Maybe<OperationDto>> GetAsync(Guid requestId) =>
-            await _providerClient.GetUsingStorageAsync(_providerSettings.OperationsApiUrl,
-                $"/operations/{requestId}", async () => await _operationRepository.GetAsync(requestId),
-                async operation => await _operationRepository.AddAsync(operation));
+        public async Task<Maybe<OperationDto>> GetAsync(Guid requestId)
+            => await _provider.GetAsync(
+                async () => await _operationRepository.GetAsync(requestId),
+                async () => await _serviceClient.GetAsync(requestId));
     }
 }

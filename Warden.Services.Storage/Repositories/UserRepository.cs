@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Warden.Common.Types;
-using Warden.DTO.Users;
-using Warden.Services.Storage.Queries;
-using Warden.Services.Storage.Repositories.Queries;
+using Warden.Common.Mongo;
+using Warden.Services.Users.Shared.Dto;
 
 namespace Warden.Services.Storage.Repositories
 {
@@ -16,11 +16,22 @@ namespace Warden.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<UserDto>> GetByIdAsync(string id) => await _database.Users().GetByIdAsync(id);
+        public async Task<bool> ExistsAsync(string userId)
+            => await Collection.AsQueryable().AnyAsync(x => x.UserId == userId);
 
-        public async Task<Maybe<UserDto>> GetByEmailAsync(string email) => await _database.Users().GetByEmailAsync(email);
+        public async Task<Maybe<UserDto>> GetByIdAsync(string userId)
+            => await Collection.FirstOrDefaultAsync(x => x.UserId == userId);
 
-        public async Task AddAsync(UserDto user) => await _database.Users().InsertOneAsync(user);
-        public async Task UpdateAsync(UserDto user) => await _database.Users().ReplaceOneAsync(x => x.UserId == user.UserId, user);
+        public async Task<Maybe<UserDto>> GetByNameAsync(string name)
+            => await Collection.FirstOrDefaultAsync(x => x.Name == name);
+
+        public async Task UpdateAsync(UserDto user)
+            => await Collection.ReplaceOneAsync(x => x.UserId == user.UserId, user);
+
+        public async Task AddAsync(UserDto user)
+            => await Collection.InsertOneAsync(user);
+
+        private IMongoCollection<UserDto> Collection
+            => _database.GetCollection<UserDto>();
     }
 }

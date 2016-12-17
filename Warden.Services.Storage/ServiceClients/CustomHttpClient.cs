@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Warden.Common.Types;
 
-namespace Warden.Services.Storage.Providers
+namespace Warden.Services.Storage.ServiceClients
 {
     public class CustomHttpClient : IHttpClient
     {

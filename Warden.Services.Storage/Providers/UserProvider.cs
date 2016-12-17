@@ -1,29 +1,43 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.DTO.Users;
 using Warden.Services.Storage.Repositories;
-using Warden.Services.Storage.Settings;
+using Warden.Services.Storage.ServiceClients;
+using Warden.Services.Users.Shared.Dto;
 
 namespace Warden.Services.Storage.Providers
 {
     public class UserProvider : IUserProvider
     {
-        private readonly IUserRepository _userRepository;
         private readonly IProviderClient _providerClient;
-        private readonly ProviderSettings _providerSettings;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserSessionRepository _userSessionRepository;
+        private readonly IUserServiceClient _userServiceClient;
 
-        public UserProvider(IUserRepository userRepository,
-            IProviderClient providerClient,
-            ProviderSettings providerSettings)
+        public UserProvider(IProviderClient providerClient,
+            IUserRepository userRepository,
+            IUserSessionRepository userSessionRepository,
+            IUserServiceClient userServiceClient)
         {
-            _userRepository = userRepository;
             _providerClient = providerClient;
-            _providerSettings = providerSettings;
+            _userRepository = userRepository;
+            _userSessionRepository = userSessionRepository;
+            _userServiceClient = userServiceClient;
         }
 
-        public async Task<Maybe<UserDto>> GetAsync(string userId) =>
-            await _providerClient.GetUsingStorageAsync(_providerSettings.UsersApiUrl,
-                $"/users/{userId}", async () => await _userRepository.GetByIdAsync(userId),
-                async user => await _userRepository.AddAsync(user));
+        public async Task<Maybe<UserDto>> GetAsync(string userId)
+            => await _providerClient.GetAsync(
+                async () => await _userRepository.GetByIdAsync(userId),
+                async () => await _userServiceClient.GetAsync(userId));
+
+        public async Task<Maybe<UserDto>> GetByNameAsync(string name)
+            => await _providerClient.GetAsync(
+                async () => await _userRepository.GetByNameAsync(name),
+                async () => await _userServiceClient.GetByNameAsync(name));
+
+        public async Task<Maybe<UserSessionDto>> GetSessionAsync(Guid id)
+            => await _providerClient.GetAsync(
+                async () => await _userSessionRepository.GetAsync(id),
+                async () => await _userServiceClient.GetSessionAsync(id));
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Warden.Common.Events;
-using Warden.Common.Events.Operations;
+using Warden.Services.Operations.Shared.Events;
 using Warden.Services.Storage.Repositories;
 
 namespace Warden.Services.Storage.Handlers
@@ -20,6 +20,7 @@ namespace Warden.Services.Storage.Handlers
             if (operation.HasNoValue)
                 return;
 
+            operation.Value.Code = @event.Code;
             operation.Value.Message = @event.Message;
             operation.Value.State = @event.State;
             operation.Value.UpdatedAt = @event.UpdatedAt;

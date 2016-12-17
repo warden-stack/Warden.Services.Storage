@@ -10,6 +10,7 @@ using Warden.Common.Mongo;
 using Warden.Common.Nancy;
 using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
+using Warden.Services.Storage.ServiceClients;
 using Warden.Services.Storage.Services;
 using Warden.Services.Storage.Settings;
 
@@ -41,6 +42,7 @@ namespace Warden.Services.Storage.Framework
                     .As<IBusClient>();
                 builder.RegisterType<ApiKeyRepository>().As<IApiKeyRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
+                builder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>();
                 builder.RegisterType<OperationRepository>().As<IOperationRepository>();
                 builder.RegisterType<OrganizationRepository>().As<IOrganizationRepository>();
                 builder.RegisterType<WardenCheckResultRootRepository>().As<IWardenCheckResultRootRepository>();
@@ -48,11 +50,12 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<WardenCheckResultRootService>().As<IWardenCheckResultRootService>();
                 builder.RegisterType<CustomHttpClient>().As<IHttpClient>();
                 builder.RegisterType<ServiceClient>().As<IServiceClient>();
+                builder.RegisterType<UserServiceClient>().As<IUserServiceClient>();
+                builder.RegisterType<OperationServiceClient>().As<IOperationServiceClient>();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<ApiKeyProvider>().As<IApiKeyProvider>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
-                builder.RegisterModule<MapperModule>();
                 builder.RegisterModule<EventHandlersModule>();
             });
             LifetimeScope = container;

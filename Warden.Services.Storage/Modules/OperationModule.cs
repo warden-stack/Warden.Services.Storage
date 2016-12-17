@@ -1,4 +1,4 @@
-﻿using Warden.DTO.Operations;
+﻿using Warden.Services.Operations.Shared.Dto;
 using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Queries;
 

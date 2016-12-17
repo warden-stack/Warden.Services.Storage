@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Warden.DTO.Wardens;
 using Warden.Services.Storage.Repositories;
+using Warden.Services.WardenChecks.Shared.Dto;
 
 namespace Warden.Services.Storage.Services
 {

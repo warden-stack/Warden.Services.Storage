@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Warden.Common.Types;
 
@@ -7,58 +6,28 @@ namespace Warden.Services.Storage.Providers
 {
     public class ProviderClient : IProviderClient
     {
-        private readonly IServiceClient _serviceClient;
-
-        public ProviderClient(IServiceClient serviceClient)
+        public async Task<Maybe<T>> GetAsync<T>(params Func<Task<Maybe<T>>>[] fetch) where T : class
         {
-            _serviceClient = serviceClient;
-        }
-
-        public async Task<Maybe<T>> GetAsync<T>(string url, string endpoint) where T : class
-        => await _serviceClient.GetAsync<T>(url, endpoint);
-
-
-        public async Task<Maybe<T>> GetUsingStorageAsync<T>(string url, string endpoint,
-            Func<Task<Maybe<T>>> storageFetch, Func<T, Task> storageSave) where T : class
-        {
-            if (storageFetch != null)
+            foreach (var func in fetch)
             {
-                var data = await storageFetch();
-                if (data.HasValue)
-                    return data;
+                var result = await func();
+                if (result.HasValue)
+                    return result;
             }
 
-            var response = await GetAsync<T>(url, endpoint);
-            if (response.HasNoValue)
-                return new Maybe<T>();
-
-            if (storageSave != null)
-                await storageSave(response.Value);
-
-            return response.Value;
+            return new Maybe<T>();
         }
 
-        public Task<Maybe<PagedResult<T>>> GetCollectionAsync<T>(string url, string endpoint) where T : class
-            => _serviceClient.GetCollectionAsync<T>(url, endpoint);
-
-        public async Task<Maybe<PagedResult<T>>> GetCollectionUsingStorageAsync<T>(string url, string endpoint,
-            Func<Task<Maybe<PagedResult<T>>>> storageFetch, Func<PagedResult<T>, Task> storageSave) where T : class
+        public async Task<Maybe<PagedResult<T>>> GetCollectionAsync<T>(params Func<Task<Maybe<PagedResult<T>>>>[] fetch) where T : class
         {
-            if (storageFetch != null)
+            foreach (var func in fetch)
             {
-                var data = await storageFetch();
-                if (data.HasValue)
-                    return data;
+                var result = await func();
+                if (result.HasValue && result.Value.IsNotEmpty)
+                    return result;
             }
 
-            var response = await GetCollectionAsync<T>(url, endpoint);
-            if (response.HasNoValue)
-                return response;
-
-            if (storageSave != null && response.Value.Items.Any())
-                await storageSave(response.Value);
-
-            return response;
+            return new Maybe<PagedResult<T>>();
         }
     }
 }

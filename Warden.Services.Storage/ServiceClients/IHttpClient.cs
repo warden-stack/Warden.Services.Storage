@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Warden.Common.Types;
 
-namespace Warden.Services.Storage.Providers
+namespace Warden.Services.Storage.ServiceClients
 {
     public interface IHttpClient
     {

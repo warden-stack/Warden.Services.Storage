@@ -3,9 +3,9 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Extensions;
 using Warden.Common.Types;
-using Warden.DTO.ApiKeys;
 using Warden.Services.Storage.Queries;
 using Warden.Common.Mongo;
+using Warden.Services.Users.Shared.Dto;
 
 namespace Warden.Services.Storage.Repositories.Queries
 {
@@ -15,12 +15,12 @@ namespace Warden.Services.Storage.Repositories.Queries
             => database.GetCollection<ApiKeyDto>();
 
         public static async Task<Maybe<ApiKeyDto>> GetAsync(this IMongoCollection<ApiKeyDto> apiKeys,
-            string key)
+            string userId, string name)
         {
-            if (key.Empty())
+            if (userId.Empty() || name.Empty())
                 return new Maybe<ApiKeyDto>();
 
-            return await apiKeys.FirstOrDefaultAsync(x => x.Key == key);
+            return await apiKeys.FirstOrDefaultAsync(x => x.UserId == userId && x.Name == name);
         }
 
         public static IMongoQueryable<ApiKeyDto> Query(this IMongoCollection<ApiKeyDto> apiKeys,

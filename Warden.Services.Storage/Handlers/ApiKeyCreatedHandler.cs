@@ -1,32 +1,35 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Warden.Common.Events;
-using Warden.Common.Events.ApiKeys;
-using Warden.DTO.ApiKeys;
+using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
+using Warden.Services.Users.Shared.Dto;
+using Warden.Services.Users.Shared.Events;
 
 namespace Warden.Services.Storage.Handlers
 {
     public class ApiKeyCreatedHandler : IEventHandler<ApiKeyCreated>
     {
+        private readonly IApiKeyProvider _apiKeyProvider;
         private readonly IApiKeyRepository _apiKeyRepository;
 
-        public ApiKeyCreatedHandler(IApiKeyRepository apiKeyRepository)
+        public ApiKeyCreatedHandler(IApiKeyProvider apiKeyProvider, IApiKeyRepository apiKeyRepository)
         {
+            _apiKeyProvider = apiKeyProvider;
             _apiKeyRepository = apiKeyRepository;
         }
 
         public async Task HandleAsync(ApiKeyCreated @event)
         {
-            var apiKey = await _apiKeyRepository.GetAsync(@event.ApiKey);
-            if (apiKey.HasValue)
+            var apiKey = await _apiKeyProvider.GetAsync(@event.UserId, @event.Name);
+            if(apiKey.HasNoValue)
                 return;
 
             await _apiKeyRepository.AddAsync(new ApiKeyDto
             {
-                Id = Guid.NewGuid(),
+                Id = apiKey.Value.Id,
                 UserId = @event.UserId,
-                Key = @event.ApiKey
+                Key = apiKey.Value.Key,
+                Name = apiKey.Value.Name
             });
         }
     }

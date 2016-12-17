@@ -1,10 +1,9 @@
-﻿using Warden.Common.Events.ApiKeys;
-using Warden.Common.Events.Features;
-using Warden.Common.Events.Operations;
-using Warden.Common.Events.Organizations;
-using Warden.Common.Events.Users;
-using Warden.Common.Events.Wardens;
+﻿using Warden.Services.Features.Shared.Events;
+using Warden.Services.Organizations.Shared.Events;
+using Warden.Services.Users.Shared.Events;
+using Warden.Services.WardenChecks.Shared.Events;
 using Warden.Common.Host;
+using Warden.Services.Operations.Shared.Events;
 using Warden.Services.Storage.Framework;
 
 namespace Warden.Services.Storage
@@ -18,8 +17,8 @@ namespace Warden.Services.Storage
                 .UseAutofac(Bootstrapper.LifetimeScope)
                 .UseRabbitMq(queueName: typeof(Program).Namespace)
                 .SubscribeToEvent<ApiKeyCreated>()
-                .SubscribeToEvent<NewUserSignedIn>()
-                .SubscribeToEvent<UserSignedIn>()
+                .SubscribeToEvent<SignedUp>()
+                .SubscribeToEvent<SignedIn>()
                 .SubscribeToEvent<UserPaymentPlanCreated>()
                 .SubscribeToEvent<OrganizationCreated>()
                 .SubscribeToEvent<WardenCheckResultProcessed>()

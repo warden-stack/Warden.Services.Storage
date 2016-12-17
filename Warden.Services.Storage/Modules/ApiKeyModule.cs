@@ -1,6 +1,6 @@
-﻿using Warden.DTO.ApiKeys;
-using Warden.Services.Storage.Providers;
+﻿using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Queries;
+using Warden.Services.Users.Shared.Dto;
 
 namespace Warden.Services.Storage.Modules
 {

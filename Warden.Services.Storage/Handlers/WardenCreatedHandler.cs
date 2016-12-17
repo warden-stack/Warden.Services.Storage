@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Warden.Common.Events;
-using Warden.Common.Events.Wardens;
+using Warden.Services.Organizations.Shared.Events;
 using Warden.Services.Storage.Services;
 
 namespace Warden.Services.Storage.Handlers

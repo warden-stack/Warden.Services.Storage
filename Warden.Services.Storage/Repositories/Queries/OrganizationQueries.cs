@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Extensions;
-using Warden.DTO.Organizations;
 using Warden.Common.Mongo;
+using Warden.Services.Organizations.Shared.Dto;
 using Warden.Services.Storage.Queries;
 
 namespace Warden.Services.Storage.Repositories.Queries

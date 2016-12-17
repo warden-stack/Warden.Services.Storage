@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Warden.Common.Domain;
-using Warden.DTO.Wardens;
+using Warden.Common.Exceptions;
 using Warden.Services.Storage.Repositories;
 using Warden.Common.Extensions;
+using Warden.Services.Organizations.Shared.Dto;
 
 namespace Warden.Services.Storage.Services
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.DTO.Wardens;
+using Warden.Services.WardenChecks.Shared.Dto;
 
 namespace Warden.Services.Storage.Repositories
 {
