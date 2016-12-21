@@ -48,7 +48,7 @@ namespace Warden.Services.Storage.ServiceClients
         {
             Logger.Debug($"Requesting BrowseApiKeysAsync");
             return await _serviceClient.GetCollectionAsync<ApiKeyDto>(_settings.UsersApiUrl,
-                $"users/{query.UserId}/api-keys");
+                $"api-keys?userId={query.UserId}&page={query.Page}&results={query.Results}");
         }
     }
 }
