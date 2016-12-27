@@ -41,14 +41,15 @@ namespace Warden.Services.Storage.ServiceClients
         public async Task<Maybe<ApiKeyDto>> GetApiKeyAsync(string userId, string name)
         {
             Logger.Debug($"Requesting GetApiKeyAsync, userId:{userId}, name:{name}");
-            return await _serviceClient.GetAsync<ApiKeyDto>(_settings.UsersApiUrl, $"users/{userId}/api-keys/{name}");
+            return await _serviceClient.GetAsync<ApiKeyDto>(_settings.UsersApiUrl, 
+                $"users/{userId}/api-keys/{name}");
         }
 
         public async Task<Maybe<PagedResult<ApiKeyDto>>> BrowseApiKeysAsync(BrowseApiKeys query)
         {
             Logger.Debug($"Requesting BrowseApiKeysAsync");
-            return await _serviceClient.GetCollectionAsync<ApiKeyDto>(_settings.UsersApiUrl,
-                $"api-keys?userId={query.UserId}&page={query.Page}&results={query.Results}");
+            return await _serviceClient.GetCollectionAsync<ApiKeyDto>(_settings.UsersApiUrl, 
+                $"users/{query.UserId}/api-keys");
         }
     }
 }
