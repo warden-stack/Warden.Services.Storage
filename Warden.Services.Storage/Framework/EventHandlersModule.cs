@@ -9,8 +9,8 @@ namespace Warden.Services.Storage.Framework
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var coreAssembly = typeof(Startup).GetTypeInfo().Assembly;
-            builder.RegisterAssemblyTypes(coreAssembly).AsClosedTypesOf(typeof(IEventHandler<>));
+            var assembly = typeof(Startup).GetTypeInfo().Assembly;
+            builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEventHandler<>));
         }
     }
 }

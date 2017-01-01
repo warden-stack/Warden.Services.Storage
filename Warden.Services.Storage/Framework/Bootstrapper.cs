@@ -52,9 +52,11 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<ServiceClient>().As<IServiceClient>();
                 builder.RegisterType<UserServiceClient>().As<IUserServiceClient>();
                 builder.RegisterType<OperationServiceClient>().As<IOperationServiceClient>();
+                builder.RegisterType<OrganizationServiceClient>().As<IOrganizationServiceClient>();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<ApiKeyProvider>().As<IApiKeyProvider>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();
+                builder.RegisterType<OrganizationProvider>().As<IOrganizationProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
                 builder.RegisterModule<EventHandlersModule>();
             });

@@ -25,6 +25,16 @@ namespace Warden.Services.Storage.Repositories.Queries
         }
 
         public static async Task<OrganizationDto> GetAsync(this IMongoCollection<OrganizationDto> organizations,
+            string userId, Guid organizationId)
+        {
+            if (userId.Empty() || organizationId == Guid.Empty)
+                return null;
+
+            return await organizations.AsQueryable().FirstOrDefaultAsync(x => x.Id == organizationId && 
+                (x.OwnerId == userId || x.Users.Any(u => u.UserId == userId)));
+        }
+
+        public static async Task<OrganizationDto> GetAsync(this IMongoCollection<OrganizationDto> organizations,
             string userId, string name)
         {
             if (userId.Empty() || name.Empty())

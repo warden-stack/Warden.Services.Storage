@@ -16,6 +16,7 @@ namespace Warden.Services.Storage.Handlers
 
         public async Task HandleAsync(SignedIn @event)
         {
+            await Task.CompletedTask;
         }
     }
 }

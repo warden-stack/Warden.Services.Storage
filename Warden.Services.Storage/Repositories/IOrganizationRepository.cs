@@ -11,6 +11,7 @@ namespace Warden.Services.Storage.Repositories
             int page = 1, int results = 10);
 
         Task<Maybe<OrganizationDto>> GetAsync(Guid id);
+        Task<Maybe<OrganizationDto>> GetAsync(string userId, Guid organizationId);
         Task<Maybe<OrganizationDto>> GetAsync(string userId, string name);
         Task AddAsync(OrganizationDto organization);
         Task UpdateAsync(OrganizationDto organization);
