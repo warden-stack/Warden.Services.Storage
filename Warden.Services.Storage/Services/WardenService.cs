@@ -27,7 +27,7 @@ namespace Warden.Services.Storage.Services
             if (organization.HasNoValue)
                 throw new ArgumentException($"Organization {organizationId} has not been found.");
 
-            if (organization.Value.OwnerId != userId)
+            if (organization.Value.Owner.UserId != userId)
             {
                 throw new ArgumentException($"User {userId} has no rights to access " +
                                             $"organization {organization.Value.Id}.");

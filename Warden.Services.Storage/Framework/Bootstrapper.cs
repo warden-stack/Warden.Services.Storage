@@ -8,11 +8,13 @@ using RawRabbit.Configuration;
 using Warden.Common.Extensions;
 using Warden.Common.Mongo;
 using Warden.Common.Nancy;
+using Warden.Common.Nancy.Serialization;
 using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
 using Warden.Services.Storage.ServiceClients;
 using Warden.Services.Storage.Services;
 using Warden.Services.Storage.Settings;
+using Newtonsoft.Json;
 
 namespace Warden.Services.Storage.Framework
 {
@@ -34,6 +36,7 @@ namespace Warden.Services.Storage.Framework
             {
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>());
                 builder.RegisterInstance(_configuration.GetSettings<ProviderSettings>());
+                builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();

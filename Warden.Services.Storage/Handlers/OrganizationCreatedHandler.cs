@@ -23,22 +23,21 @@ namespace Warden.Services.Storage.Handlers
             if (organization.HasValue)
                 return;
 
+            var owner = new UserInOrganizationDto
+                        {
+                            UserId = @event.UserId,
+                            Email = @event.UserEmail,
+                            Role = @event.UserOrganizationRole,
+                            CreatedAt = @event.UserCreatedAt
+                        };
+
             await _organizationRepository.AddAsync(new OrganizationDto
             {
                 Id = @event.OrganizationId,
                 Name = @event.Name,
                 Description = @event.Description,
-                OwnerId = @event.UserId,
-                Users = new List<UserInOrganizationDto>
-                {
-                    new UserInOrganizationDto
-                    {
-                        UserId = @event.UserId,
-                        Email = @event.UserEmail,
-                        Role = @event.UserOrganizationRole,
-                        CreatedAt = @event.UserCreatedAt
-                    }
-                },
+                Owner = owner,
+                Users = new List<UserInOrganizationDto> { owner },
                 Wardens = new List<WardenDto>()
             });
         }
