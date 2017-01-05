@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace Warden.Services.Storage.Services
 {
-    public interface IWardenCheckResultRootService
+    public interface ICheckResultService
     {
         Task ValidateAndAddAsync(string userId, Guid organizationId, Guid wardenId,
-            object checkResult, DateTime createdAt);
+            object checkResult);
     }
 }

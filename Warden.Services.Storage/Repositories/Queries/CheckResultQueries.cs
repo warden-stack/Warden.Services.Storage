@@ -7,12 +7,12 @@ using Warden.Services.WardenChecks.Shared.Dto;
 
 namespace Warden.Services.Storage.Repositories.Queries
 {
-    public static class WardenCheckResultRootQueries
+    public static class CheckResultQueries
     {
-        public static IMongoCollection<WardenCheckResultRootDto> WardenCheckResultRoots(this IMongoDatabase database)
-            => database.GetCollection<WardenCheckResultRootDto>();
+        public static IMongoCollection<CheckResultDto> CheckResults(this IMongoDatabase database)
+            => database.GetCollection<CheckResultDto>();
 
-        public static IMongoQueryable<WardenCheckResultRootDto> Query(this IMongoCollection<WardenCheckResultRootDto> checkResults,
+        public static IMongoQueryable<CheckResultDto> Query(this IMongoCollection<CheckResultDto> checkResults,
             BrowseWardenCheckResults query)
         {
             var values = checkResults.AsQueryable();

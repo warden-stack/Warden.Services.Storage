@@ -9,16 +9,16 @@ using Warden.Services.WardenChecks.Shared.Dto;
 
 namespace Warden.Services.Storage.Repositories
 {
-    public class WardenCheckResultRootRepository : IWardenCheckResultRootRepository
+    public class CheckResultRepository : ICheckResultRepository
     {
         private readonly IMongoDatabase _database;
 
-        public WardenCheckResultRootRepository(IMongoDatabase database)
+        public CheckResultRepository(IMongoDatabase database)
         {
             _database = database;
         }
 
-        public async Task<Maybe<PagedResult<WardenCheckResultRootDto>>> BrowseAsync(Guid organizationId,
+        public async Task<Maybe<PagedResult<CheckResultDto>>> BrowseAsync(Guid organizationId,
             Guid wardenId, int page = 1, int results = 10)
         {
             var query = new BrowseWardenCheckResults
@@ -29,15 +29,15 @@ namespace Warden.Services.Storage.Repositories
                 Results = results
             };
 
-            return await _database.WardenCheckResultRoots()
+            return await _database.CheckResults()
                 .Query(query)
                 .PaginateAsync(query);
         }
 
-        public async Task AddAsync(WardenCheckResultRootDto checkResult)
-            => await _database.WardenCheckResultRoots().InsertOneAsync(checkResult);
+        public async Task AddAsync(CheckResultDto checkResult)
+            => await _database.CheckResults().InsertOneAsync(checkResult);
 
-        public async Task DeleteAsync(WardenCheckResultRootDto checkResult)
-            => await _database.WardenCheckResultRoots().DeleteOneAsync(x => x.Id == checkResult.Id);
+        public async Task DeleteAsync(CheckResultDto checkResult)
+            => await _database.CheckResults().DeleteOneAsync(x => x.Id == checkResult.Id);
     }
 }

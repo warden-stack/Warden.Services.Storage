@@ -7,17 +7,17 @@ namespace Warden.Services.Storage.Handlers
 {
     public class WardenCheckResultProcessedHandler : IEventHandler<WardenCheckResultProcessed>
     {
-        private readonly IWardenCheckResultRootService _wardenCheckResultRootService;
+        private readonly ICheckResultService _checkResultService;
 
-        public WardenCheckResultProcessedHandler(IWardenCheckResultRootService wardenCheckResultRootService)
+        public WardenCheckResultProcessedHandler(ICheckResultService checkResultService)
         {
-            _wardenCheckResultRootService = wardenCheckResultRootService;
+            _checkResultService = checkResultService;
         }
 
         public async Task HandleAsync(WardenCheckResultProcessed @event)
         {
-            await _wardenCheckResultRootService.ValidateAndAddAsync(@event.UserId,
-                @event.OrganizationId, @event.WardenId, @event.Result, @event.CreatedAt);
+            await _checkResultService.ValidateAndAddAsync(@event.UserId,
+                @event.OrganizationId, @event.WardenId, @event.Result);
         }
     }
 }
