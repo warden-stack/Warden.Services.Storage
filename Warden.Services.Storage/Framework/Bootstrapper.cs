@@ -50,7 +50,6 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<OrganizationRepository>().As<IOrganizationRepository>();
                 builder.RegisterType<CheckResultRepository>().As<ICheckResultRepository>();
                 builder.RegisterType<WardenService>().As<IWardenService>();
-                builder.RegisterType<CheckResultService>().As<ICheckResultService>();
                 builder.RegisterType<CustomHttpClient>().As<IHttpClient>();
                 builder.RegisterType<ServiceClient>().As<IServiceClient>();
                 builder.RegisterType<UserServiceClient>().As<IUserServiceClient>();

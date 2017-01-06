@@ -1,6 +1,4 @@
-﻿using Nancy;
-
-namespace Warden.Services.Storage.Modules
+﻿namespace Warden.Services.Storage.Modules
 {
     public class HomeModule : ModuleBase
     {

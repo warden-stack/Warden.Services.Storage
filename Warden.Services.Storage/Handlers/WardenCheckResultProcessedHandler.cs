@@ -1,23 +1,22 @@
 ﻿using System.Threading.Tasks;
 using Warden.Common.Events;
-using Warden.Services.Storage.Services;
+using Warden.Services.Storage.Repositories;
 using Warden.Services.WardenChecks.Shared.Events;
 
 namespace Warden.Services.Storage.Handlers
 {
     public class WardenCheckResultProcessedHandler : IEventHandler<WardenCheckResultProcessed>
     {
-        private readonly ICheckResultService _checkResultService;
+        private readonly ICheckResultRepository _checkResultRepository;
 
-        public WardenCheckResultProcessedHandler(ICheckResultService checkResultService)
+        public WardenCheckResultProcessedHandler(ICheckResultRepository checkResultRepository)
         {
-            _checkResultService = checkResultService;
+            _checkResultRepository = checkResultRepository;
         }
 
         public async Task HandleAsync(WardenCheckResultProcessed @event)
         {
-            await _checkResultService.ValidateAndAddAsync(@event.UserId,
-                @event.OrganizationId, @event.WardenId, @event.Result);
+            await _checkResultRepository.AddAsync(@event.CheckResult);
         }
     }
 }
