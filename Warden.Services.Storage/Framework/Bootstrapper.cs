@@ -3,11 +3,14 @@ using Microsoft.Extensions.Configuration;
 using Nancy.Bootstrapper;
 using NLog;
 using RawRabbit.Configuration;
+using Warden.Common.Commands;
 using Warden.Common.Extensions;
+using Warden.Common.Events;
 using Warden.Common.Mongo;
 using Warden.Common.Nancy;
 using Warden.Common.Nancy.Serialization;
 using Warden.Common.RabbitMq;
+using Warden.Common.Security;
 using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
 using Warden.Services.Storage.ServiceClients;
@@ -15,6 +18,9 @@ using Warden.Services.Storage.Services;
 using Warden.Services.Storage.Settings;
 using Newtonsoft.Json;
 using Warden.Common.Handlers;
+using Warden.Common.Exceptionless;
+using Nancy;
+using System.Reflection;
 
 namespace Warden.Services.Storage.Framework
 {
@@ -22,6 +28,7 @@ namespace Warden.Services.Storage.Framework
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IConfiguration _configuration;
+        private static IExceptionHandler _exceptionHandler;
         public static ILifetimeScope LifetimeScope { get; private set; }
 
         public Bootstrapper(IConfiguration configuration)
@@ -58,9 +65,28 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
                 builder.RegisterModule<EventHandlersModule>();
                 builder.RegisterType<Handler>().As<IHandler>();
+                builder.RegisterInstance(_configuration.GetSettings<ExceptionlessSettings>()).SingleInstance();
+                builder.RegisterType<ExceptionlessExceptionHandler>().As<IExceptionHandler>().SingleInstance();
+                
+                var assembly = typeof(Startup).GetTypeInfo().Assembly;
+                builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(IEventHandler<>));
+                builder.RegisterAssemblyTypes(assembly).AsClosedTypesOf(typeof(ICommandHandler<>));
+
+                SecurityContainer.Register(builder, _configuration);
                 RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });
             LifetimeScope = container;
+        }
+
+        protected override void RequestStartup(ILifetimeScope container, IPipelines pipelines, NancyContext context)
+        {
+            pipelines.OnError.AddItemToEndOfPipeline((ctx, ex) =>
+            {
+                _exceptionHandler.Handle(ex, ctx.ToExceptionData(),
+                    "Request details", "Warden", "Service", "Storage");
+
+                return ctx.Response;
+            });
         }
 
         protected override void ApplicationStartup(ILifetimeScope container, IPipelines pipelines)
@@ -73,7 +99,9 @@ namespace Warden.Services.Storage.Framework
                 ctx.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 ctx.Response.Headers.Add("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
             };
-            Logger.Info("Warden.Services.Storage API Started");
+            _exceptionHandler = container.Resolve<IExceptionHandler>();
+            pipelines.SetupTokenAuthentication(container);
+            Logger.Info("Warden.Services.Storage API has started.");
         }
     }
 }
