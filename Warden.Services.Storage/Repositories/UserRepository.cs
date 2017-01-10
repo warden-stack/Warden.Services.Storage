@@ -4,6 +4,8 @@ using MongoDB.Driver.Linq;
 using Warden.Common.Types;
 using Warden.Common.Mongo;
 using Warden.Services.Users.Shared.Dto;
+using System.Collections.Generic;
+using Warden.Services.Storage.Queries;
 
 namespace Warden.Services.Storage.Repositories
 {
@@ -30,6 +32,24 @@ namespace Warden.Services.Storage.Repositories
 
         public async Task AddAsync(UserDto user)
             => await Collection.InsertOneAsync(user);
+
+        public async Task<Maybe<AvailableResourceDto>> IsNameAvailableAsync(string name)
+        {
+            var exists = await Collection.AsQueryable()
+                            .AnyAsync(x => x.Name == name);
+
+            return new AvailableResourceDto {IsAvailable = exists == false};
+        }
+
+        public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query)
+        {
+            var users = Collection.AsQueryable();
+
+            return await users.PaginateAsync(query);
+        }
+
+        public async Task AddManyAsync(IEnumerable<UserDto> users)
+            => await Collection.InsertManyAsync(users);
 
         private IMongoCollection<UserDto> Collection
             => _database.GetCollection<UserDto>();

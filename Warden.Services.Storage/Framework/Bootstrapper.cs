@@ -2,19 +2,19 @@
 using Microsoft.Extensions.Configuration;
 using Nancy.Bootstrapper;
 using NLog;
-using RawRabbit;
-using RawRabbit.vNext;
 using RawRabbit.Configuration;
 using Warden.Common.Extensions;
 using Warden.Common.Mongo;
 using Warden.Common.Nancy;
 using Warden.Common.Nancy.Serialization;
+using Warden.Common.RabbitMq;
 using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
 using Warden.Services.Storage.ServiceClients;
 using Warden.Services.Storage.Services;
 using Warden.Services.Storage.Settings;
 using Newtonsoft.Json;
+using Warden.Common.Handlers;
 
 namespace Warden.Services.Storage.Framework
 {
@@ -39,10 +39,6 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
-                var rawRabbitConfiguration = _configuration.GetSettings<RawRabbitConfiguration>();
-                builder.RegisterInstance(rawRabbitConfiguration).SingleInstance();
-                builder.RegisterInstance(BusClientFactory.CreateDefault(rawRabbitConfiguration))
-                    .As<IBusClient>();
                 builder.RegisterType<ApiKeyRepository>().As<IApiKeyRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
                 builder.RegisterType<UserSessionRepository>().As<IUserSessionRepository>();
@@ -61,6 +57,8 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<OrganizationProvider>().As<IOrganizationProvider>();
                 builder.RegisterType<UserProvider>().As<IUserProvider>();
                 builder.RegisterModule<EventHandlersModule>();
+                builder.RegisterType<Handler>().As<IHandler>();
+                RabbitMqContainer.Register(builder, _configuration.GetSettings<RawRabbitConfiguration>());
             });
             LifetimeScope = container;
         }

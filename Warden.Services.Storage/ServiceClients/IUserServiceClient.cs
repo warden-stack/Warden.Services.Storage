@@ -13,5 +13,6 @@ namespace Warden.Services.Storage.ServiceClients
         Task<Maybe<UserSessionDto>> GetSessionAsync(Guid id);
         Task<Maybe<ApiKeyDto>> GetApiKeyAsync(string userId, string name);
         Task<Maybe<PagedResult<ApiKeyDto>>> BrowseApiKeysAsync(BrowseApiKeys query);
+        Task<Maybe<AvailableResourceDto>> IsAvailableAsync(string name); 
     }
 }

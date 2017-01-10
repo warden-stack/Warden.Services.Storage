@@ -51,5 +51,11 @@ namespace Warden.Services.Storage.ServiceClients
             return await _serviceClient.GetCollectionAsync<ApiKeyDto>(_settings.UsersApiUrl, 
                 $"users/{query.UserId}/api-keys");
         }
+
+        public async Task<Maybe<AvailableResourceDto>> IsAvailableAsync(string name)
+        {
+            Logger.Debug($"Requesting IsAvailableAsync, name:{name}");
+            return await _serviceClient.GetAsync<AvailableResourceDto>(_settings.UsersApiUrl, $"usernames/{name}/available");
+        }
     }
 }

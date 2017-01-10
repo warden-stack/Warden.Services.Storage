@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Warden.Common.Types;
+using Warden.Services.Storage.Queries;
 using Warden.Services.Storage.Repositories;
 using Warden.Services.Storage.ServiceClients;
 using Warden.Services.Users.Shared.Dto;
@@ -25,7 +26,16 @@ namespace Warden.Services.Storage.Providers
             _userServiceClient = userServiceClient;
         }
 
-        public async Task<Maybe<UserDto>> GetAsync(string userId)
+        public async Task<Maybe<AvailableResourceDto>> IsAvailableAsync(string name) 
+            => await _providerClient.GetAsync(
+                async () => await _userRepository.IsNameAvailableAsync(name),
+                async () => await _userServiceClient.IsAvailableAsync(name));
+
+        public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query) 
+            => await _providerClient.GetCollectionAsync(
+                async () => await _userRepository.BrowseAsync(query));
+
+        public async Task<Maybe<UserDto>> GetAsync(string userId) 
             => await _providerClient.GetAsync(
                 async () => await _userRepository.GetByIdAsync(userId),
                 async () => await _userServiceClient.GetAsync(userId));

@@ -19,6 +19,7 @@ namespace Warden.Services.Storage
                 .SubscribeToEvent<ApiKeyCreated>()
                 .SubscribeToEvent<SignedUp>()
                 .SubscribeToEvent<SignedIn>()
+                .SubscribeToEvent<UsernameChanged>()
                 .SubscribeToEvent<UserPaymentPlanCreated>()
                 .SubscribeToEvent<OrganizationCreated>()
                 .SubscribeToEvent<WardenCheckResultProcessed>()
