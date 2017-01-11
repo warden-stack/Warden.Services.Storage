@@ -1,4 +1,5 @@
-﻿using Warden.Common.Nancy;
+﻿using Nancy.Security;
+using Warden.Common.Nancy;
 
 namespace Warden.Services.Storage.Modules
 {
@@ -12,7 +13,7 @@ namespace Warden.Services.Storage.Modules
         { 
             if (requireAuthentication)
             {
-                // this.RequiresAuthentication();
+                this.RequiresAuthentication();
             }
         }
     }
