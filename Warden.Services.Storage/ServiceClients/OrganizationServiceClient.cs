@@ -1,25 +1,26 @@
 using System;
 using System.Threading.Tasks;
+using Warden.Common.Security;
 using Warden.Common.Types;
 using Warden.Services.Organizations.Shared.Dto;
-using Warden.Services.Storage.Settings;
 
 namespace Warden.Services.Storage.ServiceClients
 {
     public class OrganizationServiceClient : IOrganizationServiceClient
     {
         private readonly IServiceClient _serviceClient;
-        private readonly ProviderSettings _settings;
+        private readonly ServiceSettings _settings;
 
-        public OrganizationServiceClient(IServiceClient serviceClient, ProviderSettings settings)
+        public OrganizationServiceClient(IServiceClient serviceClient, ServiceSettings settings)
         {
             _serviceClient = serviceClient;
             _settings = settings;
+            _serviceClient.SetSettings(settings);
         }
 
         public async Task<Maybe<OrganizationDto>> GetAsync(string userId, Guid organizationId)
         {
-            return await _serviceClient.GetAsync<OrganizationDto>(_settings.OrganizationsApiUrl, 
+            return await _serviceClient.GetAsync<OrganizationDto>(_settings.Url, 
                 $"/organizations/{organizationId}?userId={userId}");
         }
     }

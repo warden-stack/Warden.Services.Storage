@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using NLog;
+using Warden.Common.Security;
 using Warden.Common.Types;
 using Warden.Services.Operations.Shared.Dto;
-using Warden.Services.Storage.Settings;
 
 namespace Warden.Services.Storage.ServiceClients
 {
@@ -11,18 +11,19 @@ namespace Warden.Services.Storage.ServiceClients
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IServiceClient _serviceClient;
-        private readonly ProviderSettings _settings;
+        private readonly ServiceSettings _settings;
 
-        public OperationServiceClient(IServiceClient serviceClient, ProviderSettings settings)
+        public OperationServiceClient(IServiceClient serviceClient, ServiceSettings settings)
         {
             _serviceClient = serviceClient;
             _settings = settings;
+            _serviceClient.SetSettings(settings);
         }
 
         public async Task<Maybe<OperationDto>> GetAsync(Guid requestId)
         {
             Logger.Debug($"Requesting GetAsync, requestId:{requestId}");
-            return await _serviceClient.GetAsync<OperationDto>(_settings.OperationsApiUrl, $"/operations/{requestId}");
+            return await _serviceClient.GetAsync<OperationDto>(_settings.Url, $"/operations/{requestId}");
         }
     }
 }

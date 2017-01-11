@@ -15,12 +15,12 @@ using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
 using Warden.Services.Storage.ServiceClients;
 using Warden.Services.Storage.Services;
-using Warden.Services.Storage.Settings;
 using Newtonsoft.Json;
 using Warden.Common.Handlers;
 using Warden.Common.Exceptionless;
 using Nancy;
 using System.Reflection;
+using Warden.Services.Storage.Framework.IoC;
 
 namespace Warden.Services.Storage.Framework
 {
@@ -42,9 +42,9 @@ namespace Warden.Services.Storage.Framework
             container.Update(builder =>
             {
                 builder.RegisterInstance(_configuration.GetSettings<MongoDbSettings>());
-                builder.RegisterInstance(_configuration.GetSettings<ProviderSettings>());
                 builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
+                builder.RegisterModule<ServiceClientModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<ApiKeyRepository>().As<IApiKeyRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
