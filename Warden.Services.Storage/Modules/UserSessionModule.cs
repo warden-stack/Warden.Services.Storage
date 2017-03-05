@@ -1,6 +1,6 @@
 ﻿using Warden.Services.Storage.Providers;
-using Warden.Services.Storage.Queries;
-using Warden.Services.Users.Shared.Dto;
+using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.Models.Users;
 
 namespace Warden.Services.Storage.Modules
 {
@@ -8,7 +8,7 @@ namespace Warden.Services.Storage.Modules
     {
         public UserSessionModule(IUserProvider userProvider) : base("user-sessions")
         {
-            Get("{id}", async args => await Fetch<GetUserSession, UserSessionDto>
+            Get("{id}", async args => await Fetch<GetUserSession, UserSession>
                 (async x => await userProvider.GetSessionAsync(x.Id)).HandleAsync());
         }
     }

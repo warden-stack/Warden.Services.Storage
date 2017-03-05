@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Common.Types;
-using Warden.Services.Storage.Queries;
+using Warden.Common.ServiceClients.Queries;
 using Warden.Services.Storage.Repositories.Queries;
 using Warden.Common.Mongo;
-using Warden.Services.Users.Shared.Dto;
+using Warden.Services.Storage.Models.Users;
 
 namespace Warden.Services.Storage.Repositories
 {
@@ -18,18 +18,18 @@ namespace Warden.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<ApiKeyDto>> GetAsync(string userId, string name)
+        public async Task<Maybe<ApiKey>> GetAsync(string userId, string name)
             => await _database.ApiKeys().GetAsync(userId, name);
 
-        public async Task<Maybe<PagedResult<ApiKeyDto>>> BrowseAsync(BrowseApiKeys query)
+        public async Task<Maybe<PagedResult<ApiKey>>> BrowseAsync(BrowseApiKeys query)
             => await _database.ApiKeys()
                 .Query(query)
                 .PaginateAsync(query);
 
-        public async Task AddManyAsync(IEnumerable<ApiKeyDto> apiKeys)
+        public async Task AddManyAsync(IEnumerable<ApiKey> apiKeys)
             => await _database.ApiKeys().InsertManyAsync(apiKeys);
 
-        public async Task AddAsync(ApiKeyDto apiKey)
+        public async Task AddAsync(ApiKey apiKey)
             => await _database.ApiKeys().InsertOneAsync(apiKey);
 
         public async Task DeleteAsync(string key)

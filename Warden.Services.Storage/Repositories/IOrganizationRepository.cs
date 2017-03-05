@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.Services.Organizations.Shared.Dto;
+using Warden.Services.Storage.Models.Organizations;
 
 namespace Warden.Services.Storage.Repositories
 {
     public interface IOrganizationRepository
     {
-        Task<Maybe<PagedResult<OrganizationDto>>> BrowseAsync(string userId, string ownerId,
+        Task<Maybe<PagedResult<Organization>>> BrowseAsync(string userId, string ownerId,
             int page = 1, int results = 10);
 
-        Task<Maybe<OrganizationDto>> GetAsync(Guid id);
-        Task<Maybe<OrganizationDto>> GetAsync(string userId, Guid organizationId);
-        Task<Maybe<OrganizationDto>> GetAsync(string userId, string name);
-        Task AddAsync(OrganizationDto organization);
-        Task UpdateAsync(OrganizationDto organization);
-        Task DeleteAsync(OrganizationDto organization);
+        Task<Maybe<Organization>> GetAsync(Guid id);
+        Task<Maybe<Organization>> GetAsync(string userId, Guid organizationId);
+        Task<Maybe<Organization>> GetAsync(string userId, string name);
+        Task AddAsync(Organization organization);
+        Task UpdateAsync(Organization organization);
+        Task DeleteAsync(Organization organization);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using System.Reflection;
-using Warden.Common.Events;
+using Warden.Messages.Events;
 using Module = Autofac.Module;
 
 namespace Warden.Services.Storage.Framework

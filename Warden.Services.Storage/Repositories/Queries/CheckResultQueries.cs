@@ -2,17 +2,17 @@
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Mongo;
-using Warden.Services.Storage.Queries;
-using Warden.Services.WardenChecks.Shared.Dto;
+using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.Models.WardenChecks;
 
 namespace Warden.Services.Storage.Repositories.Queries
 {
     public static class CheckResultQueries
     {
-        public static IMongoCollection<CheckResultDto> CheckResults(this IMongoDatabase database)
-            => database.GetCollection<CheckResultDto>();
+        public static IMongoCollection<CheckResult> CheckResults(this IMongoDatabase database)
+            => database.GetCollection<CheckResult>();
 
-        public static IMongoQueryable<CheckResultDto> Query(this IMongoCollection<CheckResultDto> checkResults,
+        public static IMongoQueryable<CheckResult> Query(this IMongoCollection<CheckResult> checkResults,
             BrowseWardenCheckResults query)
         {
             var values = checkResults.AsQueryable();

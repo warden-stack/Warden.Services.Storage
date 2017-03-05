@@ -5,17 +5,17 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Extensions;
 using Warden.Common.Mongo;
-using Warden.Services.Organizations.Shared.Dto;
-using Warden.Services.Storage.Queries;
+using Warden.Services.Storage.Models.Organizations;
+using Warden.Common.ServiceClients.Queries;
 
 namespace Warden.Services.Storage.Repositories.Queries
 {
     public static class OrganizationQueries
     {
-        public static IMongoCollection<OrganizationDto> Organizations(this IMongoDatabase database)
-            => database.GetCollection<OrganizationDto>();
+        public static IMongoCollection<Organization> Organizations(this IMongoDatabase database)
+            => database.GetCollection<Organization>();
 
-        public static async Task<OrganizationDto> GetAsync(this IMongoCollection<OrganizationDto> organizations,
+        public static async Task<Organization> GetAsync(this IMongoCollection<Organization> organizations,
             Guid id)
         {
             if (id == Guid.Empty)
@@ -24,7 +24,7 @@ namespace Warden.Services.Storage.Repositories.Queries
             return await organizations.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public static async Task<OrganizationDto> GetAsync(this IMongoCollection<OrganizationDto> organizations,
+        public static async Task<Organization> GetAsync(this IMongoCollection<Organization> organizations,
             string userId, Guid organizationId)
         {
             if (userId.Empty() || organizationId == Guid.Empty)
@@ -34,7 +34,7 @@ namespace Warden.Services.Storage.Repositories.Queries
                 (x.Owner.UserId == userId || x.Users.Any(u => u.UserId == userId)));
         }
 
-        public static async Task<OrganizationDto> GetAsync(this IMongoCollection<OrganizationDto> organizations,
+        public static async Task<Organization> GetAsync(this IMongoCollection<Organization> organizations,
             string userId, string name)
         {
             if (userId.Empty() || name.Empty())
@@ -43,8 +43,8 @@ namespace Warden.Services.Storage.Repositories.Queries
             return await organizations.AsQueryable().FirstOrDefaultAsync(x => x.Owner.UserId == userId && x.Name == name);
         }
 
-        public static async Task<OrganizationDto> GetByNameForOwnerAsync(
-            this IMongoCollection<OrganizationDto> organizations,
+        public static async Task<Organization> GetByNameForOwnerAsync(
+            this IMongoCollection<Organization> organizations,
             string name, string ownerId)
         {
             if (name.Empty() || ownerId.Empty())
@@ -58,7 +58,7 @@ namespace Warden.Services.Storage.Repositories.Queries
                                           && x.Owner.UserId == ownerId);
         }
 
-        public static IMongoQueryable<OrganizationDto> Query(this IMongoCollection<OrganizationDto> organizations,
+        public static IMongoQueryable<Organization> Query(this IMongoCollection<Organization> organizations,
             BrowseOrganizations query)
         {
             var values = organizations.AsQueryable();
@@ -70,7 +70,7 @@ namespace Warden.Services.Storage.Repositories.Queries
             return values.OrderBy(x => x.Name);
         }
 
-        public static async Task<bool> ExistsAsync(this IMongoCollection<OrganizationDto> organizations,
+        public static async Task<bool> ExistsAsync(this IMongoCollection<Organization> organizations,
             Guid id)
         {
             if (id == Guid.Empty)

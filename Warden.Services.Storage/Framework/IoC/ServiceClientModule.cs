@@ -1,7 +1,7 @@
 using System.Linq;
 using Autofac;
 using Warden.Common.Security;
-using Warden.Services.Storage.ServiceClients;
+using Warden.Common.ServiceClients;
 
 namespace Warden.Services.Storage.Framework.IoC
 {

@@ -1,9 +1,9 @@
-﻿using Warden.Services.Features.Shared.Events;
-using Warden.Services.Organizations.Shared.Events;
-using Warden.Services.Users.Shared.Events;
-using Warden.Services.WardenChecks.Shared.Events;
+﻿using Warden.Messages.Events.Features;
+using Warden.Messages.Events.Organizations;
+using Warden.Messages.Events.Users;
+using Warden.Messages.Events.WardenChecks;
 using Warden.Common.Host;
-using Warden.Services.Operations.Shared.Events;
+using Warden.Messages.Events.Operations;
 using Warden.Services.Storage.Framework;
 
 namespace Warden.Services.Storage

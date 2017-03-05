@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Warden.Common.Exceptions;
 using Warden.Services.Storage.Repositories;
 using Warden.Common.Extensions;
-using Warden.Services.Organizations.Shared.Dto;
 
 namespace Warden.Services.Storage.Services
 {
@@ -37,7 +36,7 @@ namespace Warden.Services.Storage.Services
             if (wardenExists)
                 throw new DomainException($"Warden with name: '{name}' has been already added.");
 
-            organization.Value.Wardens.Add(new WardenDto
+            organization.Value.Wardens.Add(new Warden.Services.Storage.Models.Organizations.Warden
             {
                 Id = id,
                 Name = name,

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.Services.Operations.Shared.Dto;
+using Warden.Services.Storage.Models.Operations;
 using Warden.Services.Storage.Repositories;
-using Warden.Services.Storage.ServiceClients;
+using Warden.Common.ServiceClients;
 
 namespace Warden.Services.Storage.Providers
 {
@@ -22,7 +22,7 @@ namespace Warden.Services.Storage.Providers
             _serviceClient = serviceClient;
         }
 
-        public async Task<Maybe<OperationDto>> GetAsync(Guid requestId)
+        public async Task<Maybe<Operation>> GetAsync(Guid requestId)
             => await _provider.GetAsync(
                 async () => await _operationRepository.GetAsync(requestId),
                 async () => await _serviceClient.GetAsync(requestId));

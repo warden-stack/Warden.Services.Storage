@@ -3,9 +3,9 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Types;
 using Warden.Common.Mongo;
-using Warden.Services.Users.Shared.Dto;
+using Warden.Services.Storage.Models.Users;
 using System.Collections.Generic;
-using Warden.Services.Storage.Queries;
+using Warden.Common.ServiceClients.Queries;
 
 namespace Warden.Services.Storage.Repositories
 {
@@ -21,37 +21,37 @@ namespace Warden.Services.Storage.Repositories
         public async Task<bool> ExistsAsync(string userId)
             => await Collection.AsQueryable().AnyAsync(x => x.UserId == userId);
 
-        public async Task<Maybe<UserDto>> GetByIdAsync(string userId)
+        public async Task<Maybe<User>> GetByIdAsync(string userId)
             => await Collection.FirstOrDefaultAsync(x => x.UserId == userId);
 
-        public async Task<Maybe<UserDto>> GetByNameAsync(string name)
+        public async Task<Maybe<User>> GetByNameAsync(string name)
             => await Collection.FirstOrDefaultAsync(x => x.Name == name);
 
-        public async Task UpdateAsync(UserDto user)
+        public async Task UpdateAsync(User user)
             => await Collection.ReplaceOneAsync(x => x.UserId == user.UserId, user);
 
-        public async Task AddAsync(UserDto user)
+        public async Task AddAsync(User user)
             => await Collection.InsertOneAsync(user);
 
-        public async Task<Maybe<AvailableResourceDto>> IsNameAvailableAsync(string name)
+        public async Task<Maybe<AvailableResource>> IsNameAvailableAsync(string name)
         {
             var exists = await Collection.AsQueryable()
                             .AnyAsync(x => x.Name == name);
 
-            return new AvailableResourceDto {IsAvailable = exists == false};
+            return new AvailableResource {IsAvailable = exists == false};
         }
 
-        public async Task<Maybe<PagedResult<UserDto>>> BrowseAsync(BrowseUsers query)
+        public async Task<Maybe<PagedResult<User>>> BrowseAsync(BrowseUsers query)
         {
             var users = Collection.AsQueryable();
 
             return await users.PaginateAsync(query);
         }
 
-        public async Task AddManyAsync(IEnumerable<UserDto> users)
+        public async Task AddManyAsync(IEnumerable<User> users)
             => await Collection.InsertManyAsync(users);
 
-        private IMongoCollection<UserDto> Collection
-            => _database.GetCollection<UserDto>();
+        private IMongoCollection<User> Collection
+            => _database.GetCollection<User>();
     }
 }

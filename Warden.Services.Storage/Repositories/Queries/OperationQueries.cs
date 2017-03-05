@@ -4,16 +4,16 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Extensions;
 using Warden.Common.Mongo;
-using Warden.Services.Operations.Shared.Dto;
+using Warden.Services.Storage.Models.Operations;
 
 namespace Warden.Services.Storage.Repositories.Queries
 {
     public static class OperationQueries
     {
-        public static IMongoCollection<OperationDto> Operations(this IMongoDatabase database)
-            => database.GetCollection<OperationDto>();
+        public static IMongoCollection<Operation> Operations(this IMongoDatabase database)
+            => database.GetCollection<Operation>();
 
-        public static async Task<OperationDto> GetByRequestIdAsync(this IMongoCollection<OperationDto> operations,
+        public static async Task<Operation> GetByRequestIdAsync(this IMongoCollection<Operation> operations,
             Guid id)
         {
             if (id.IsEmpty())

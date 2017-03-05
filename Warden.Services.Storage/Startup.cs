@@ -22,11 +22,10 @@ namespace Warden.Services.Storage
                 .AddEnvironmentVariables()
                 .SetBasePath(env.ContentRootPath);
 
-            if (env.IsProduction())
+            if (env.IsProduction() || env.IsDevelopment())
             {
                 builder.AddLockbox();
             }
-
             Configuration = builder.Build();
         }
 

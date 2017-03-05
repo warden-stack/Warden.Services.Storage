@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Common.Types;
 using Warden.Common.Mongo;
-using Warden.Services.Organizations.Shared.Dto;
-using Warden.Services.Storage.Queries;
+using Warden.Services.Storage.Models.Organizations;
+using Warden.Common.ServiceClients.Queries;
 using Warden.Services.Storage.Repositories.Queries;
 
 namespace Warden.Services.Storage.Repositories
@@ -18,10 +18,10 @@ namespace Warden.Services.Storage.Repositories
       _database = database;
     }
 
-    public async Task<Maybe<OrganizationDto>> GetAsync(Guid id)
+    public async Task<Maybe<Organization>> GetAsync(Guid id)
         => await _database.Organizations().GetAsync(id);
 
-    public async Task<Maybe<PagedResult<OrganizationDto>>> BrowseAsync(string userId, string ownerId, int page = 1, int results = 10)
+    public async Task<Maybe<PagedResult<Organization>>> BrowseAsync(string userId, string ownerId, int page = 1, int results = 10)
     {
       var query = new BrowseOrganizations
       {
@@ -36,19 +36,19 @@ namespace Warden.Services.Storage.Repositories
           .PaginateAsync(query);
     }
 
-    public async Task<Maybe<OrganizationDto>> GetAsync(string userId, Guid organizationId)
+    public async Task<Maybe<Organization>> GetAsync(string userId, Guid organizationId)
         => await _database.Organizations().GetAsync(userId, organizationId);
 
-    public async Task<Maybe<OrganizationDto>> GetAsync(string userId, string name)
+    public async Task<Maybe<Organization>> GetAsync(string userId, string name)
         => await _database.Organizations().GetAsync(userId, name);
 
-    public async Task UpdateAsync(OrganizationDto organization)
+    public async Task UpdateAsync(Organization organization)
         => await _database.Organizations().ReplaceOneAsync(x => x.Id == organization.Id, organization);
 
-    public async Task AddAsync(OrganizationDto organization)
+    public async Task AddAsync(Organization organization)
         => await _database.Organizations().InsertOneAsync(organization);
 
-    public async Task DeleteAsync(OrganizationDto organization)
+    public async Task DeleteAsync(Organization organization)
         => await _database.Organizations().DeleteOneAsync(x => x.Id == organization.Id && x.Name == organization.Name);
   }
 }

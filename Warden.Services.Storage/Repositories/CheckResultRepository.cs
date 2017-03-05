@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Common.Types;
-using Warden.Services.Storage.Queries;
+using Warden.Common.ServiceClients.Queries;
 using Warden.Services.Storage.Repositories.Queries;
 using Warden.Common.Mongo;
-using Warden.Services.WardenChecks.Shared.Dto;
+using Warden.Services.Storage.Models.WardenChecks;
 
 namespace Warden.Services.Storage.Repositories
 {
@@ -18,7 +18,7 @@ namespace Warden.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<PagedResult<CheckResultDto>>> BrowseAsync(Guid organizationId,
+        public async Task<Maybe<PagedResult<CheckResult>>> BrowseAsync(Guid organizationId,
             Guid wardenId, int page = 1, int results = 10)
         {
             var query = new BrowseWardenCheckResults
@@ -34,10 +34,10 @@ namespace Warden.Services.Storage.Repositories
                 .PaginateAsync(query);
         }
 
-        public async Task AddAsync(CheckResultDto checkResult)
+        public async Task AddAsync(CheckResult checkResult)
             => await _database.CheckResults().InsertOneAsync(checkResult);
 
-        public async Task DeleteAsync(CheckResultDto checkResult)
+        public async Task DeleteAsync(CheckResult checkResult)
             => await _database.CheckResults().DeleteOneAsync(x => x.Id == checkResult.Id);
     }
 }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Common.Types;
-using Warden.Services.Operations.Shared.Dto;
+using Warden.Services.Storage.Models.Operations;
 using Warden.Services.Storage.Repositories.Queries;
 
 namespace Warden.Services.Storage.Repositories
@@ -16,12 +16,12 @@ namespace Warden.Services.Storage.Repositories
             _database = database;
         }
 
-        public async Task<Maybe<OperationDto>> GetAsync(Guid requestId)
+        public async Task<Maybe<Operation>> GetAsync(Guid requestId)
             => await _database.Operations().GetByRequestIdAsync(requestId);
 
-        public async Task AddAsync(OperationDto operation) => await _database.Operations().InsertOneAsync(operation);
+        public async Task AddAsync(Operation operation) => await _database.Operations().InsertOneAsync(operation);
 
-        public async Task UpdateAsync(OperationDto operation)
+        public async Task UpdateAsync(Operation operation)
             => await _database.Operations().ReplaceOneAsync(x => x.Id == operation.Id, operation);
     }
 }
