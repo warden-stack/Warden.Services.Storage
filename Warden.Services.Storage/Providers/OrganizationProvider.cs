@@ -25,6 +25,6 @@ namespace Warden.Services.Storage.Providers
         public async Task<Maybe<Organization>> GetAsync(string userId, Guid organizationId)
             => await _provider.GetAsync(
                 async () => await _organizationRepository.GetAsync(userId, organizationId),
-                async () => await _serviceClient.GetAsync(userId, organizationId));
+                async () => await _serviceClient.GetAsync<Organization>(userId, organizationId));
     }
 }

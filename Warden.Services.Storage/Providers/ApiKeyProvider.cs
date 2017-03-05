@@ -25,11 +25,11 @@ namespace Warden.Services.Storage.Providers
         public async Task<Maybe<ApiKey>> GetAsync(string userId, string name)
             => await _providerClient.GetAsync(
                 async () => await _apiKeyRepository.GetAsync(userId, name),
-                async () => await _userServiceClient.GetApiKeyAsync(userId, name));
+                async () => await _userServiceClient.GetApiKeyAsync<ApiKey>(userId, name));
 
         public async Task<Maybe<PagedResult<ApiKey>>> BrowseAsync(BrowseApiKeys query)
             => await _providerClient.GetAsync(
                 async () => await _apiKeyRepository.BrowseAsync(query),
-                async () => await _userServiceClient.BrowseApiKeysAsync(query));
+                async () => await _userServiceClient.BrowseApiKeysAsync<ApiKey>(query));
     }
 }
