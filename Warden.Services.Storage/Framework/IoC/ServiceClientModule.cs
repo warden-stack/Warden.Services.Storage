@@ -14,17 +14,17 @@ namespace Warden.Services.Storage.Framework.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "operations"))
+                    .Single(s => s.Title == "operations"))
                 .Named<ServiceSettings>(OperationsSettingsKey)
                 .SingleInstance();
 
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "organizations"))
+                    .Single(s => s.Title == "organizations"))
                 .Named<ServiceSettings>(OrganizationsSettingsKey)
                 .SingleInstance();
 
             builder.Register(x => x.Resolve<ServicesSettings>()
-                    .Single(s => s.Name == "users"))
+                    .Single(s => s.Title == "users"))
                 .Named<ServiceSettings>(UsersSettingsKey)
                 .SingleInstance();
 
