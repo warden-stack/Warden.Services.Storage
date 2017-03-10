@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Warden.Common.Types;
 using Warden.Services.Storage.Models.Operations;
 using Warden.Services.Storage.Repositories;
-using Warden.Common.ServiceClients;
+using Warden.Services.Storage.ServiceClients;
 
 namespace Warden.Services.Storage.Providers
 {

@@ -11,9 +11,9 @@ using Warden.Common.Nancy;
 using Warden.Common.Nancy.Serialization;
 using Warden.Common.RabbitMq;
 using Warden.Common.Security;
+using Warden.Common.ServiceClients;
 using Warden.Services.Storage.Providers;
 using Warden.Services.Storage.Repositories;
-using Warden.Common.ServiceClients;
 using Warden.Services.Storage.Services;
 using Newtonsoft.Json;
 using Warden.Common.Handlers;
@@ -46,6 +46,7 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<CustomJsonSerializer>().As<JsonSerializer>().SingleInstance();
                 builder.RegisterModule<MongoDbModule>();
                 builder.RegisterModule<ServiceClientModule>();
+                builder.RegisterModule<ServiceClientsModule>();
                 builder.RegisterType<MongoDbInitializer>().As<IDatabaseInitializer>();
                 builder.RegisterType<ApiKeyRepository>().As<IApiKeyRepository>();
                 builder.RegisterType<UserRepository>().As<IUserRepository>();
@@ -54,7 +55,6 @@ namespace Warden.Services.Storage.Framework
                 builder.RegisterType<OrganizationRepository>().As<IOrganizationRepository>();
                 builder.RegisterType<CheckResultRepository>().As<ICheckResultRepository>();
                 builder.RegisterType<WardenService>().As<IWardenService>();
-                builder.RegisterType<CustomHttpClient>().As<IHttpClient>();
                 builder.RegisterType<ProviderClient>().As<IProviderClient>();
                 builder.RegisterType<ApiKeyProvider>().As<IApiKeyProvider>();
                 builder.RegisterType<OperationProvider>().As<IOperationProvider>();

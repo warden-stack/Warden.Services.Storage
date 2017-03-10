@@ -5,7 +5,7 @@ using Warden.Common.Types;
 using Warden.Common.Mongo;
 using Warden.Services.Storage.Models.Users;
 using System.Collections.Generic;
-using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.ServiceClients.Queries;
 
 namespace Warden.Services.Storage.Repositories
 {

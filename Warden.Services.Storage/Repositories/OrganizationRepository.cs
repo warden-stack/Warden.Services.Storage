@@ -4,7 +4,7 @@ using MongoDB.Driver;
 using Warden.Common.Types;
 using Warden.Common.Mongo;
 using Warden.Services.Storage.Models.Organizations;
-using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.ServiceClients.Queries;
 using Warden.Services.Storage.Repositories.Queries;
 
 namespace Warden.Services.Storage.Repositories

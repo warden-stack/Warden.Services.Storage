@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Warden.Common.Types;
-using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.ServiceClients.Queries;
 using Warden.Services.Storage.Repositories.Queries;
 using Warden.Common.Mongo;
 using Warden.Services.Storage.Models.Users;

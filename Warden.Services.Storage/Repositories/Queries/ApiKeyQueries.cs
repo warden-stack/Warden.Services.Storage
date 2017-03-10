@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Warden.Common.Extensions;
 using Warden.Common.Types;
-using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.ServiceClients.Queries;
 using Warden.Common.Mongo;
 using Warden.Services.Storage.Models.Users;
 

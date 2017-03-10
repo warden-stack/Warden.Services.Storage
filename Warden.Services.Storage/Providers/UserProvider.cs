@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Warden.Common.Types;
-using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.ServiceClients.Queries;
 using Warden.Services.Storage.Repositories;
-using Warden.Common.ServiceClients;
+using Warden.Services.Storage.ServiceClients;
 using Warden.Services.Storage.Models.Users;
 
 namespace Warden.Services.Storage.Providers

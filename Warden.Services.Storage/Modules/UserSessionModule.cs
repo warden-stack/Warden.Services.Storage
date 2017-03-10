@@ -1,5 +1,5 @@
 ﻿using Warden.Services.Storage.Providers;
-using Warden.Common.ServiceClients.Queries;
+using Warden.Services.Storage.ServiceClients.Queries;
 using Warden.Services.Storage.Models.Users;
 
 namespace Warden.Services.Storage.Modules
