@@ -1,2 +1,2 @@
-dotnet restore --source "https://api.nuget.org/v3/index.json" --source "https://www.myget.org/F/warden%build-env%/api/v3/index.json" --no-cache
+dotnet restore Warden.Services.Storage.Models --source "https://api.nuget.org/v3/index.json" --source "https://www.myget.org/F/warden%build-env%/api/v3/index.json" --no-cache
 dotnet pack "Warden.Services.Storage.Models" -o .
