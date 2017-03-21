@@ -4,6 +4,7 @@ using Warden.Common.Types;
 using Warden.Services.Storage.Models.Organizations;
 using Warden.Services.Storage.Repositories;
 using Warden.Services.Storage.ServiceClients;
+using Warden.Services.Storage.ServiceClients.Queries;
 
 namespace Warden.Services.Storage.Providers
 {
@@ -22,9 +23,14 @@ namespace Warden.Services.Storage.Providers
             _serviceClient = serviceClient;
         }
 
-        public async Task<Maybe<Organization>> GetAsync(string userId, Guid organizationId)
+        public async Task<Maybe<PagedResult<Organization>>> BrowseAsync(BrowseOrganizations query)
             => await _provider.GetAsync(
-                async () => await _organizationRepository.GetAsync(userId, organizationId),
-                async () => await _serviceClient.GetAsync<Organization>(userId, organizationId));
+                async () => await _organizationRepository.BrowseAsync(query),
+                async () => await _serviceClient.BrowseAsync<Organization>(query));
+
+        public async Task<Maybe<Organization>> GetAsync(string userId, Guid organizationId)
+                => await _provider.GetAsync(
+                    async () => await _organizationRepository.GetAsync(userId, organizationId),
+                    async () => await _serviceClient.GetAsync<Organization>(userId, organizationId));
     }
 }
